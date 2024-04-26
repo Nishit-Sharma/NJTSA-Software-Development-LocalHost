@@ -4,9 +4,16 @@ import webbrowser
 import datetime
 import json
 import sys
+import pyaudio
+import os
 
 # Get the stream data from the command-line argument
-device_id = json.loads(sys.argv[1])
+try:
+    device_id = json.loads(sys.argv[1])
+except (IndexError, json.JSONDecodeError) as e:
+    print(f"Error decoding JSON: {e}")
+    # Handle the error, e.g., exit the script or provide a default value
+    device_id = {'device_index': 0}
 
 # Create a speech recognition instance and set the audio source
 r = sr.Recognizer()
