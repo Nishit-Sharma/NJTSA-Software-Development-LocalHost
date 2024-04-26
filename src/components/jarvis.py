@@ -47,6 +47,8 @@ def tell_time():
     speak(f"The time is {time}.")
 
 # Check if wake-up keyword is detected
+
+speak("Hello Sir")
 try:
     if wake_word in r.recognize_google(audio):
         speak("Yes sir?")
@@ -78,4 +80,4 @@ try:
     except sr.RequestError as e:
         speak("Sorry, I couldn't reach the Google servers. Check your internet connection.")
 except sr.UnknownValueError:
-    speak("I'm sorry, I didn't hear the wake-up keyword.")
+    print("I'm sorry, I didn't hear the wake-up keyword.")
