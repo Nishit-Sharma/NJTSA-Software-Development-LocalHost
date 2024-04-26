@@ -78,22 +78,19 @@ function Home() {
 
   const cardData = [
     {
-      title: "Supercharged!",
-      category: "Easy to use",
-      description:
-        "The new supercar is here, 543 cv and 140 000$. This is the best racing GT in years!",
+      title: "Check Weather",
+      category: "Weather",
+      description: "Get the current weather information for a city.",
     },
     {
-      title: "Travel Diaries",
-      category: "idk",
-      description:
-        "Explore the breathtaking landscapes of New Zealand with our latest travel blog series.",
+      title: "Open Website",
+      category: "Web",
+      description: "Open a website by saying 'open website example.com'.",
     },
     {
-      title: "Healthy Eating Made Easy",
-      category: "Cool",
-      description:
-        "Discover delicious and nutritious recipes that will make you fall in love with healthy eating.",
+      title: "Tell Time",
+      category: "Time",
+      description: "Ask Jarvis to tell you the current time.",
     },
   ];
 

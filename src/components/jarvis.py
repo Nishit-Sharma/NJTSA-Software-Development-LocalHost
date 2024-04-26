@@ -6,6 +6,7 @@ import json
 import sys
 import pyaudio
 import os
+import requests
 
 # Get the stream data from the command-line argument
 try:
@@ -49,6 +50,20 @@ def open_website(url):
 def tell_time():
     time = datetime.datetime.now().strftime("%I:%M %p")
     speak(f"The time is {time}.")
+    
+def get_weather(city):
+    api_key = "39c53008af40643aa03b01b0e27de931"
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    complete_url = base_url + "appid=" + api_key + "&q=" + city + "&units=metric"
+    response = requests.get(complete_url)
+    data = response.json()
+
+    if data["cod"] != "404":
+        weather = data["weather"][0]["description"]
+        temperature = data["main"]["temp"]
+        return f"The weather in {city} is {weather} with a temperature of {temperature}°C."
+    else:
+        return f"Sorry, I couldn't find the weather information for {city}."
 
 # Check if wake-up keyword is detected
 speak("Hello Sir")
@@ -67,6 +82,10 @@ try:
             speak("I'm not sure what you want me to open.")
     elif "time" in command:
         tell_time()
+    elif "weather" in command:
+        city = command.split()[-1]
+        weather_info = get_weather(city)
+        speak(weather_info)
     else:
         speak("I'm sorry, I didn't understand that.")
 
