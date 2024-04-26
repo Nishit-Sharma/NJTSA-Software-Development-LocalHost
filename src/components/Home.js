@@ -13,7 +13,6 @@ import "./Global.css";
 function Home() {
   const [isListening, setIsListening] = useState(false);
   const [stream, setStream] = useState(null);
-  const [error, setError] = useState(null);
 
   const props = useSpring({
     to: { opacity: 1 },
@@ -25,7 +24,9 @@ function Home() {
     // Request microphone access when the component mounts
     async function requestMicrophone() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         setStream(stream);
       } catch (error) {
         console.error("Error accessing microphone:", error);
@@ -36,14 +37,24 @@ function Home() {
 
   const startJarvis = () => {
     setIsListening(true);
-    // Pass the stream to the Python script
-    fetch("/run-jarvis", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+
+    // Get the selected microphone device index
+    const selectedDeviceIndex = stream.getTracks()[0].getSettings().deviceId;
+
+    fetch(
+      "/run-jarvis",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          stream: stream,
+          device_id: { device_index: selectedDeviceIndex },
+        }),
+        mode: "no-cors",
       },
-      body: JSON.stringify({ stream: stream }),
-    })
+    )
       .then((response) => response.text())
       .then((data) => {
         console.log("Jarvis response:", data);
