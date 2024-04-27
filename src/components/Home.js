@@ -110,23 +110,22 @@ function Home() {
         > */}
         <div className="mx-auto flex w-3/4 flex-col items-center justify-center py-10">
           {/* HEADER */}
-          <h1 className="mb-10 mt-10 text-center text-3xl font-extrabold leading-none tracking-tight text-stone-100 md:text-4xl lg:text-5xl">
-            {" "}
+          <h1 className="mb-10 py-2 mt-32 text-center text-3xl font-extrabold leading-none tracking-tight text-stone-50 md:text-4xl lg:text-5xl">
             I can{" "}
             <ReactTyped
-              strings={["tell the time.", "schedule events.", "open websites."]}
+              strings={["tell the time.", "schedule events.", "open websites.", "read real time data.", "change the world.", "tell you the weather."]}
               typeSpeed={50}
               loop
               backSpeed={20}
               cursorChar="✦"
               showCursor={true}
-              className="inline-block bg-gradient-to-r from-purple-500/70 to-pink-200 bg-clip-text text-transparent"
+              className="inline-block bg-gradient-to-r from-pink-400 to-indigo-500 bg-clip-text text-transparent"
             />
           </h1>
           {/* END HEADER */}
 
           {/* BODY */}
-          <p className="text-shadow-lg mb-16 text-center font-normal text-stone-300 shadow-black sm:px-16 lg:text-lg xl:px-48">
+          <p className="font-serif italic text-shadow-lg mb-16 text-center font-normal text-stone-300 shadow-black sm:px-16 lg:text-lg xl:px-48">
             A.L.P.H.A. is your cutting-edge personal intelligent assistant,
             harnessing advanced natural language processing to provide seamless,
             human-like communication and support. This powerful AI learns and
@@ -163,6 +162,15 @@ function Home() {
           ))}
         </div>
         {/* END CARDS */}
+        
+        <div
+          className="w-56 ml-4 rounded border border-blue-500/30 bg-blue-900/30 p-3 text-center ext-white duration-300 glow:border-teal-500/60 glow:bg-teal-500/40"
+        >
+          <p className="font-mono text-xl text-teal-300 glow:text-stone-50">
+            TSA TeamID: 2237
+          </p>
+        </div>
+
       </Layout>
     </animated.div>
   );

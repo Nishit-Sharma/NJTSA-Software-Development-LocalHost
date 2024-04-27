@@ -240,7 +240,7 @@ def get_weather(city):
         temperature = data["main"]["temp"]
         
         # Return the weather information as a string
-        return f"The weather in {city} is {weather} with a temperature of {temperature}°F."
+        return f"The weather in {city} is {weather} with a temperature of {temperature} degrees Farrenheit."
     else:
         # Return an error message if the city is not found
         return f"Sorry, I couldn't find the weather information for {city}."

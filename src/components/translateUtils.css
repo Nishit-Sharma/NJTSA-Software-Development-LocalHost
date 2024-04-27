@@ -1,0 +1,104 @@
+/* Translate X */
+.tx-0 {
+    transform: translateX(-0);
+}
+.group:hover .tx-1 {
+    transform: translateX(-0.25rem);
+}
+.group:hover .tx-2 {
+    transform: translateX(-0.5rem);
+}
+.group:hover .tx-3 {
+    transform: translateX(-0.75rem);
+}
+.group:hover .tx-4 {
+    transform: translateX(-1rem);
+}
+.group:hover .tx-5 {
+    transform: translateX(-1.25rem);
+}
+.group:hover .tx-10 {
+    transform: translateX(-2.5rem);
+}
+.group:hover .tx-15 {
+    transform: translateX(-3.75rem);
+}
+.group:hover .tx-20 {
+    transform: translateX(-5rem);
+}
+.group:hover .tx-25 {
+    transform: translateX(-6.25rem);
+}
+.group:hover .tx-30 {
+    transform: translateX(-7.5rem);
+}
+
+/* Translate Y */
+.ty-0 {
+    transform: translateY(-0);
+}
+.group:hover .ty-1 {
+    transform: translateY(-0.25rem);
+}
+.group:hover .ty-2 {
+    transform: translateY(-0.5rem);
+}
+.group:hover .ty-3 {
+    transform: translateY(-0.75rem);
+}
+.group:hover .ty-4 {
+    transform: translateY(-1rem);
+}
+.group:hover .ty-5 {
+    transform: translateY(-1.25rem);
+}
+.group:hover .ty-10 {
+    transform: translateY(-2.5rem);
+}
+.group:hover .ty-15 {
+    transform: translateY(-3.75rem);
+}
+.group:hover .ty-20 {
+    transform: translateY(-5rem);
+}
+.group:hover .ty-25 {
+    transform: translateY(-6.25rem);
+}
+.group:hover .ty-30 {
+    transform: translateY(-7.5rem);
+}
+
+/* Translate Z */
+.tz-0 {
+    transform: translateZ(-0);
+}
+.group:hover .tz-1 {
+    transform: translateZ(-0.25rem);
+}
+.group:hover .tz-2 {
+    transform: translateZ(-0.5rem);
+}
+.group:hover .tz-3 {
+    transform: translateZ(-0.75rem);
+}
+.group:hover .tz-4 {
+    transform: translateZ(-1rem);
+}
+.group:hover .tz-5 {
+    transform: translateZ(-1.25rem);
+}
+.group:hover .tz-10 {
+    transform: translateZ(-2.5rem);
+}
+.group:hover .tz-15 {
+    transform: translateZ(-3.75rem);
+}
+.group:hover .tz-20 {
+    transform: translateZ(-5rem);
+}
+.group:hover .tz-25 {
+    transform: translateZ(-6.25rem);
+}
+.group:hover .tz-30 {
+    transform: translateZ(-7.5rem);
+}
