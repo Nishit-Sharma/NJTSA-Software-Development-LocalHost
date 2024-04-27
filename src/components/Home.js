@@ -83,9 +83,9 @@ function Home() {
       description: "Get the current weather information for a city.",
     },
     {
-      title: "Open Website",
+      title: "Open",
       category: "Web",
-      description: "Open a website by saying 'open website example.com'.",
+      description: "Open a website by saying 'open example.com'.",
     },
     {
       title: "Tell Time",
