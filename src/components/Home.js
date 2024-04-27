@@ -78,19 +78,19 @@ function Home() {
 
   const cardData = [
     {
-      title: "Open Website",
-      category: "Web",
-      description: "Open a website by saying 'open example.com'.",
+      title: "Google Search",
+      category: "Search",
+      description: "Perform a Google search on a specific topic.",
     },
     {
-      title: "Tell Time",
-      category: "Time",
-      description: "Ask A.L.P.H.A to tell you the current time.",
+      title: "Calculations",
+      category: "Math",
+      description: "Perform advanced calculations.",
     },
     {
       title: "Check Weather",
       category: "Weather",
-      description: "Get the current weather information for a city.",
+      description: "Get the current weather information for any location.",
     },
   ];
 
@@ -126,16 +126,8 @@ function Home() {
 
           {/* BODY */}
           <p className="font-serif italic text-shadow-lg mb-16 text-center font-normal text-stone-300 shadow-black sm:px-16 lg:text-lg xl:px-48">
-            A.L.P.H.A. is your cutting-edge personal intelligent assistant,
-            harnessing advanced natural language processing to provide seamless,
-            human-like communication and support. This powerful AI learns and
-            adapts to your needs, offering personalized assistance with tasks,
-            research, scheduling, smart home control, and more. Whether at home
-            or on-the-go, A.L.P.H.A.'s' intuitive voice interface and continuous
-            learning capabilities make it an indispensable companion,
-            revolutionizing how you interact with technology. Experience the
-            future of artificial intelligence tailored to your lifestyle -
-            explore A.L.P.H.A. today.
+          Introducing A.L.P.H.A., an Advanced Logical Processing Holistic Assistance system designed to be your intelligent office companion. While smart home assistants are limited to personal tasks, A.L.P.H.A. is a responsive AI assistant that can promptly execute a wide range of commands by accessing the internet, listening attentively, and working efficiently in a professional environment. With features like opening websites, checking time and weather, performing searches and calculations, A.L.P.H.A. overcomes challenges in speech recognition, server access, and API integration to increase productivity and transform the office experience for employees. Get your own AI assistant for free and make going to work exciting again with A.L.P.H.A.
+
           </p>
           {/* END BODY */}
 

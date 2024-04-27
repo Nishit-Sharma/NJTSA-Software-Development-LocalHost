@@ -18,14 +18,16 @@ import re
 import io
 import wolframalpha
 
+
 class CalendarEvent:
     """
     Represents a single event in the calendar.
     """
+
     def __init__(self, name, datetime_obj):
         """
         Initializes a CalendarEvent object with the given name and datetime.
-        
+
         Args:
             name (str): The name of the event.
             datetime_obj (datetime): The date and time of the event.
@@ -33,10 +35,12 @@ class CalendarEvent:
         self.name = name
         self.datetime = datetime_obj
 
+
 class Calendar:
     """
     Represents a calendar that can store and manage events.
     """
+
     def __init__(self):
         """
         Initializes a Calendar object with an empty list of events.
@@ -46,7 +50,7 @@ class Calendar:
     def add_event(self, event):
         """
         Adds an event to the calendar.
-        
+
         Args:
             event (CalendarEvent): The event to be added to the calendar.
         """
@@ -55,7 +59,7 @@ class Calendar:
     def remove_event(self, event):
         """
         Removes an event from the calendar.
-        
+
         Args:
             event (CalendarEvent): The event to be removed from the calendar.
         """
@@ -64,10 +68,10 @@ class Calendar:
     def get_events(self, date=None):
         """
         Returns a list of events on the specified date or all events if no date is provided.
-        
+
         Args:
             date (date, optional): The date for which to retrieve events. Defaults to None.
-        
+
         Returns:
             list: A list of events on the specified date or all events if no date is provided.
         """
@@ -83,6 +87,7 @@ class Calendar:
         for event in self.events:
             print(f"{event.datetime.strftime('%Y-%m-%d %H:%M')} - {event.name}")
 
+
 # Create a new calendar instance
 calendar = Calendar()
 
@@ -93,13 +98,13 @@ except (IndexError, json.JSONDecodeError) as e:
     # If there is an error decoding the JSON or the argument is missing
     print(f"Error decoding JSON: {e}")
     # Handle the error, e.g., exit the script or provide a default value
-    device_id = {'device_index': 0}
+    device_id = {"device_index": 0}
 
 # Create a speech recognition instance
 r = sr.Recognizer()
 
 # Select the microphone using the device_index from the device_id dictionary
-with sr.Microphone(device_index=device_id['device_index']) as source:
+with sr.Microphone(device_index=device_id["device_index"]) as source:
     print("Listening...")
     # Set the pause threshold for the recognizer
     r.pause_threshold = 1
@@ -107,19 +112,21 @@ with sr.Microphone(device_index=device_id['device_index']) as source:
     audio = r.listen(source)
 
 # Initialize the ElevenLabs text-to-speech engine with the API key
-client = ElevenLabs(
-  api_key="44bd2fafea55e550c58548571fe9f64d"
-)
+client = ElevenLabs(api_key="44bd2fafea55e550c58548571fe9f64d")
 
 # Set the wake-up keyword to "Alpha"
 wake_word = "Alpha"
 
+
 # Define a function to convert text to speech using the ElevenLabs API
 def speak(text):
     # Generate audio from the given text using the "James Fitzgerald" voice and "eleven_multilingual_v2" model
-    audio = client.generate(text=text, voice="James Fitzgerald", model="eleven_multilingual_v2")
+    audio = client.generate(
+        text=text, voice="James Fitzgerald", model="eleven_multilingual_v2",stream=True
+    )
     # Play the generated audio
-    play(audio)
+    stream(audio)
+
 
 # Define a function to open a website in the default web browser
 def open_website(url):
@@ -128,6 +135,7 @@ def open_website(url):
     # Speak a message indicating that the website is being opened
     speak("Opening website.")
 
+
 # Define a function to tell the current time
 def tell_time():
     # Get the current time as a string in the format "HH:MM AM/PM"
@@ -135,17 +143,18 @@ def tell_time():
     # Speak the current time
     speak(f"The time is {time}.")
 
+
 # Define a function to add an event to the calendar
 def add_calendar_event(r):
     # Use the microphone to get input from the user
-    with sr.Microphone(device_index=device_id['device_index']) as source:
+    with sr.Microphone(device_index=device_id["device_index"]) as source:
         # Ask the user for the event name and recognize the speech
         speak("What is the name of the event?")
         event_name = r.recognize_google(r.listen(source))
         print(f"You said: {event_name}")
 
         # Ask the user for the event date and recognize the speech
-        speak("What is the date of the event?") # Format Month, Day, Year is applicable
+        speak("What is the date of the event?")  # Format Month, Day, Year is applicable
         event_date_str = r.recognize_google(r.listen(source))
         print(f"You said: {event_date_str}")
 
@@ -170,14 +179,34 @@ def add_calendar_event(r):
         event_day = int(event_day_str)
 
         # Convert the month name to the corresponding number
-        month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        event_month = next((i for i, month in enumerate(month_names) if month.lower() == event_month_str.lower()), None)
+        month_names = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ]
+        event_month = next(
+            (
+                i
+                for i, month in enumerate(month_names)
+                if month.lower() == event_month_str.lower()
+            ),
+            None,
+        )
         if event_month is None:
             speak("I'm sorry, I didn't recognize that month name.")
             return
 
         # Ask the user for the event time and recognize the speech
-        speak("What is the time of the event?") # Format HH:MM AM/PM
+        speak("What is the time of the event?")  # Format HH:MM AM/PM
         event_time_str = r.recognize_google(r.listen(source))
         print(f"You said: {event_time_str}")
 
@@ -196,23 +225,26 @@ def add_calendar_event(r):
             event_hour = 0
 
         # Create the event datetime object
-        event_datetime = datetime.datetime(event_year, event_month + 1, event_day, event_hour, event_minute)
+        event_datetime = datetime.datetime(
+            event_year, event_month + 1, event_day, event_hour, event_minute
+        )
 
         # Add the event to the calendar
         event = CalendarEvent(event_name, event_datetime)
         calendar.add_event(event)
         speak(f"Added the event '{event_name}' to your calendar.")
 
+
 def set_reminder(r):
     # Use the microphone to get input from the user
-    with sr.Microphone(device_index=device_id['device_index']) as source:
+    with sr.Microphone(device_index=device_id["device_index"]) as source:
         # Ask the user for the reminder text and recognize the speech
         speak("What is the reminder text?")
         reminder_text = r.recognize_google(r.listen(source))
         print(f"You said: {reminder_text}")
 
         # Ask the user for the reminder time and recognize the speech
-        speak("What time would you like to set the reminder?") # Format Hour:Minute
+        speak("What time would you like to set the reminder?")  # Format Hour:Minute
         reminder_time = r.recognize_google(r.listen(source))
         print(f"You said: {reminder_time}")
 
@@ -223,12 +255,13 @@ def set_reminder(r):
         # calendar.setreminder(reminder_text, reminder_datetime) # This is a placeholder function
         speak(f"I've set a reminder for '{reminder_text}' at {reminder_time}.")
 
+
 def get_weather(city):
     # Set the API key and base URL for the OpenWeatherMap API
     api_key = "39c53008af40643aa03b01b0e27de931"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = base_url + "appid=" + api_key + "&q=" + city + "&units=imperial"
-    
+
     # Send a GET request to the API with the complete URL
     response = requests.get(complete_url)
     data = response.json()
@@ -238,19 +271,20 @@ def get_weather(city):
         # Extract the weather description and temperature from the API response
         weather = data["weather"][0]["description"]
         temperature = data["main"]["temp"]
-        
+
         # Return the weather information as a string
-        return f"The weather in {city} is {weather} with a temperature of {temperature} degrees Farrenheit."
+        return f"The weather in {city} is {weather} with a temperature of {temperature} degrees Fahrenheit."
     else:
         # Return an error message if the city is not found
         return f"Sorry, I couldn't find the weather information for {city}."
+
 
 def gpt_math(
     inputtext="what is ten times 9 plus fifty five to the power of 7 and then all of that square rooted",
 ):
     # Create a Client object for the OpenAI API
     _client = Client()
-    
+
     # Send a chat completion request to the OpenAI API with the given input text
     response = _client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -270,19 +304,19 @@ def gpt_math(
     response = matches[0]
 
     print(response)
-    
+
     try:
         # Temporarily set output into a string variable
         output = io.StringIO()
         sys.stdout = output
-        
+
         # Execute the Python code
         exec(response)
-        
+
         # Revert the output to the original stdout
         output_str = output.getvalue()
         sys.stdout = sys.__stdout__
-        
+
         # Print and speak the output
         print(output_str)
         speak(output_str)
@@ -290,19 +324,18 @@ def gpt_math(
         # Handle any exceptions that occur during the code execution
         speak("I'm sorry, I couldn't calculate that expression.")
 
-def ask_gpt(
-    inputtext
-):
+
+def ask_gpt(inputtext):
     # Create a Client object for the OpenAI API
     _client = Client()
-    
+
     # Send a chat completion request to the OpenAI API with the given input text
     response = _client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
                 "role": "user",
-                "content": f"""Respond to the following user prompt in a sentence or two:
+                "content": f"""You are an AI Agent named "ALPHA." Respond to the following user prompt in two sentences or less. The user prompt is as follows:
     
 {inputtext}            
 """,
@@ -312,7 +345,7 @@ def ask_gpt(
 
     # Extract the response from the API response
     response = response.choices[0].message.content
-    
+
     try:
         # Print and speak the response
         print(response)
@@ -320,8 +353,9 @@ def ask_gpt(
     except:
         # Handle any exceptions that occur during the response processing
         speak("I'm sorry, can you say that again?")
-        
-def ask_wolframalpha(question, app_id = "TYJYRK-UVWT679K48"):
+
+
+def ask_wolframalpha(question, app_id="TYJYRK-UVWT679K48"):
     """
     Queries WolframAlpha with the given question and returns the response text.
 
@@ -329,10 +363,10 @@ def ask_wolframalpha(question, app_id = "TYJYRK-UVWT679K48"):
     - question (str): The question to ask WolframAlpha.
     - app_id (str): The app ID obtained from WolframAlpha.
     """
-    
+
     # Create a Client object for the OpenAI API
     _client = Client()
-    
+
     # Send a chat completion request to the OpenAI API with the given question
     response = _client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -350,14 +384,14 @@ def ask_wolframalpha(question, app_id = "TYJYRK-UVWT679K48"):
     # Extract the WolframAlpha input string from the API response
     response = response.choices[0].message.content
     # Regex pattern to match everything between "&&"
-    pattern = r'\&\&(.*?)\&\&'
+    pattern = r"\&\&(.*?)\&\&"
     # Find all matches
     matches = re.findall(pattern, response)
 
     try:
         # Get the first match (the WolframAlpha input string)
         response = matches[0]
-        
+
         # Instance of WolframAlpha client class with the app ID
         client = wolframalpha.Client(app_id)
 
@@ -373,16 +407,19 @@ def ask_wolframalpha(question, app_id = "TYJYRK-UVWT679K48"):
         # Handle any exceptions that occur during the WolframAlpha query
         speak("I'm sorry, I didn't understand that.")
 
+
 def remove_calendar_event(r):
     # Use the microphone to get input from the user
-    with sr.Microphone(device_index=device_id['device_index']) as source:
+    with sr.Microphone(device_index=device_id["device_index"]) as source:
         # Ask the user for the name of the event to remove and recognize the speech
         speak("What is the name of the event you want to remove?")
         event_name = r.recognize_google(r.listen(source))
         print(f"You said: {event_name}")
 
         # Find the event in the calendar
-        event_to_remove = next((event for event in calendar.events if event.name == event_name), None)
+        event_to_remove = next(
+            (event for event in calendar.events if event.name == event_name), None
+        )
         if event_to_remove:
             # Remove the event from the calendar
             calendar.remove_event(event_to_remove)
@@ -391,9 +428,10 @@ def remove_calendar_event(r):
             # Speak a message if the event is not found
             speak(f"I couldn't find an event named '{event_name}' in your calendar.")
 
+
 def get_calendar_events(r):
     # Use the microphone to get input from the user
-    with sr.Microphone(device_index=device_id['device_index']) as source:
+    with sr.Microphone(device_index=device_id["device_index"]) as source:
         # Ask the user for the date of the events to retrieve and recognize the speech
         speak("What date would you like to see the events for?")
         event_date_str = r.recognize_google(r.listen(source))
@@ -418,8 +456,28 @@ def get_calendar_events(r):
         event_day = int(event_day_str)
 
         # Convert the month name to the corresponding number
-        month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        event_month = next((i for i, month in enumerate(month_names) if month.lower() == event_month_str.lower()), None)
+        month_names = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ]
+        event_month = next(
+            (
+                i
+                for i, month in enumerate(month_names)
+                if month.lower() == event_month_str.lower()
+            ),
+            None,
+        )
         if event_month is None:
             # Speak an error message if the month name is not recognized
             speak("I'm sorry, I didn't recognize that month name.")
@@ -427,7 +485,7 @@ def get_calendar_events(r):
 
         # Create the event date object
         event_date = datetime.date(event_year, event_month + 1, event_day)
-        
+
         # Get the events on the specified date
         events_on_date = calendar.get_events(event_date)
 
@@ -440,10 +498,11 @@ def get_calendar_events(r):
             # Speak a message if there are no events on the specified date
             speak(f"There are no events scheduled for {event_date_str}.")
 
+
 def gpt_goto_website(inputtext):
     # Create a Client object for the OpenAI API
     _client = Client()
-    
+
     # Send a chat completion request to the OpenAI API with the given input text
     response = _client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -452,8 +511,8 @@ def gpt_goto_website(inputtext):
                 "role": "user",
                 "content": f"""I will ask you for a website url and you will give me the url surrounded by && like &&this&&. Do not give anything else but the website.
 
-    {inputtext}
-    """,
+{inputtext}
+""",
             }
         ],
     )
@@ -466,7 +525,7 @@ def gpt_goto_website(inputtext):
     matches = re.findall(pattern, response)
 
     print(response)
-    
+
     try:
         # Get the first match (the website URL)
         response = matches[0]
@@ -480,10 +539,20 @@ def gpt_goto_website(inputtext):
         # Handle any exceptions that occur during the website opening
         print("uh oh")
 
+
+def utilities():
+    speak(
+        "I can handle a variety of tasks for you - from opening websites and checking the weather, to performing complex calculations and research using the internet"
+    )
+
+
 # Define function to check the command and execute the appropriate action
 def check_command(command, r):
+    # Check if the command is what can you do?
+    if "what can you do" in command.lower():
+        utilities()
     # Check if the command contains "open"
-    if "open" in command.lower():
+    elif "open" in command.lower():
         # If "open" is found, pass the command to the gpt_goto_website function
         gpt_goto_website(command)
     # Check if the command contains "time"
@@ -546,12 +615,13 @@ def check_command(command, r):
         else:
             # If no query is provided, ask for the chat topic
             speak("What would you like to chat about?")
-            
+
+
 try:
     # Create a speech recognition instance and set the audio source
     r = sr.Recognizer()
     speak("Yes Sir?")
-    with sr.Microphone(device_index=device_id['device_index']) as source:
+    with sr.Microphone(device_index=device_id["device_index"]) as source:
         print("Listening...")
         r.pause_threshold = 1
         audio = r.listen(source)
@@ -559,15 +629,15 @@ try:
     # Convert speech to text
     command = r.recognize_google(audio)
     print("You said: " + command)
-        
+
     # Check the command and execute the appropriate action
     check_command(command, r)
-        
+
     # Check if the command contains "goodbye" or "exit"
     if "goodbye" in command.lower() or "exit" in command.lower():
         # If "goodbye" or "exit" is found, speak a farewell message
         speak("Goodbye!")
-    
+
 except sr.UnknownValueError:
     # Handle the case when the speech recognition fails to understand the input
     speak("I'm sorry, I didn't understand that.")
