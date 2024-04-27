@@ -3,6 +3,8 @@
 # Importing a whole lotta yap
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play, stream, save
+from g4f.client import Client
+import wolframalpha
 import speech_recognition as sr
 import webbrowser
 import datetime
@@ -13,10 +15,8 @@ import calendar
 import os
 import pyaudio
 import ffmpeg
-from g4f.client import Client
 import re
 import io
-import wolframalpha
 
 
 class CalendarEvent:
@@ -128,32 +128,33 @@ def speak(text):
     stream(audio)
 
 
-# Define a function to open a website in the default web browser
 def open_website(url):
-    # Open the specified URL in the default web browser
+    """Open a website url in the default web browser."""
+
+    # Open URL in default web browser
     webbrowser.open(url)
-    # Speak a message indicating that the website is being opened
-    speak("Opening website.")
+
+    speak(f"Opening website.")
 
 
-# Define a function to tell the current time
 def tell_time():
+    """Tell the current time."""
+
     # Get the current time as a string in the format "HH:MM AM/PM"
     time = datetime.datetime.now().strftime("%I:%M %p")
-    # Speak the current time
+
     speak(f"The time is {time}.")
 
 
-# Define a function to add an event to the calendar
 def add_calendar_event(r):
-    # Use the microphone to get input from the user
+    """Add an event to the calendar."""
+  
+    # Get input from the user
     with sr.Microphone(device_index=device_id["device_index"]) as source:
-        # Ask the user for the event name and recognize the speech
         speak("What is the name of the event?")
         event_name = r.recognize_google(r.listen(source))
         print(f"You said: {event_name}")
 
-        # Ask the user for the event date and recognize the speech
         speak("What is the date of the event?")  # Format Month, Day, Year is applicable
         event_date_str = r.recognize_google(r.listen(source))
         print(f"You said: {event_date_str}")
@@ -161,7 +162,7 @@ def add_calendar_event(r):
         # Split the date string into month, day, and year
         event_date_parts = event_date_str.split(" ")
 
-        # Check if the date string has at least month and day
+        # Date string has at least month and day
         if len(event_date_parts) < 2 or len(event_date_parts) > 3:
             speak("I'm sorry, I didn't understand the date format. Please try again.")
             return
@@ -236,20 +237,20 @@ def add_calendar_event(r):
 
 
 def set_reminder(r):
-    # Use the microphone to get input from the user
+    """Set a reminder on the calendar."""
+
+    # Get input from the user
     with sr.Microphone(device_index=device_id["device_index"]) as source:
-        # Ask the user for the reminder text and recognize the speech
         speak("What is the reminder text?")
         reminder_text = r.recognize_google(r.listen(source))
         print(f"You said: {reminder_text}")
 
-        # Ask the user for the reminder time and recognize the speech
         speak("What time would you like to set the reminder?")  # Format Hour:Minute
         reminder_time = r.recognize_google(r.listen(source))
         print(f"You said: {reminder_time}")
 
         # Convert the reminder time to a datetime object
-        reminder_datetime = datetime.datetime.strptime(reminder_time, "%H:%M")
+        # reminder_datetime = datetime.datetime.strptime(reminder_time, "%H:%M")
 
         # Set the reminder
         # calendar.setreminder(reminder_text, reminder_datetime) # This is a placeholder function
@@ -257,6 +258,8 @@ def set_reminder(r):
 
 
 def get_weather(city):
+    """Get the weather in a city using OpenWeatherMap API"""
+    
     # Set the API key and base URL for the OpenWeatherMap API
     api_key = "39c53008af40643aa03b01b0e27de931"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
@@ -279,14 +282,11 @@ def get_weather(city):
         return f"Sorry, I couldn't find the weather information for {city}."
 
 
-def gpt_math(
-    inputtext="what is ten times 9 plus fifty five to the power of 7 and then all of that square rooted",
-):
-    # Create a Client object for the OpenAI API
-    _client = Client()
-
+def gpt_math(inputtext="what is ten times 9 plus fifty five to the power of 7 and then all of that square rooted"):
+    """Solve a math problem with natural language input and number output."""
+    
     # Send a chat completion request to the OpenAI API with the given input text
-    response = _client.chat.completions.create(
+    response = Client().chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -326,11 +326,10 @@ def gpt_math(
 
 
 def ask_gpt(inputtext):
-    # Create a Client object for the OpenAI API
-    _client = Client()
-
+    """Ask AI chat a question under the context of the ALPHA Agent."""
+    
     # Send a chat completion request to the OpenAI API with the given input text
-    response = _client.chat.completions.create(
+    response = Client().chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -356,19 +355,10 @@ def ask_gpt(inputtext):
 
 
 def ask_wolframalpha(question, app_id="TYJYRK-UVWT679K48"):
-    """
-    Queries WolframAlpha with the given question and returns the response text.
-
-    Parameters:
-    - question (str): The question to ask WolframAlpha.
-    - app_id (str): The app ID obtained from WolframAlpha.
-    """
-
-    # Create a Client object for the OpenAI API
-    _client = Client()
+    """Queries WolframAlpha with the given question and returns the response text."""
 
     # Send a chat completion request to the OpenAI API with the given question
-    response = _client.chat.completions.create(
+    response = Client().chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -500,11 +490,10 @@ def get_calendar_events(r):
 
 
 def gpt_goto_website(inputtext):
-    # Create a Client object for the OpenAI API
-    _client = Client()
-
+    """Navigate to a website from natural language input."""
+    
     # Send a chat completion request to the OpenAI API with the given input text
-    response = _client.chat.completions.create(
+    response = Client().chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -519,10 +508,9 @@ def gpt_goto_website(inputtext):
 
     # Extract the website URL from the API response
     response = response.choices[0].message.content
-    # Regex pattern to match everything between "&&"
-    pattern = r"\&\&(.*?)\&\&"
+
     # Find all matches
-    matches = re.findall(pattern, response)
+    matches = re.findall(r"\&\&(.*?)\&\&", response)
 
     print(response)
 
@@ -541,9 +529,8 @@ def gpt_goto_website(inputtext):
 
 
 def utilities():
-    speak(
-        "I can handle a variety of tasks for you - from opening websites and checking the weather, to performing complex calculations and research using the internet"
-    )
+    """Say what ALPHA can do."""
+    speak("I can handle a variety of tasks for you - from opening websites and checking the weather, to performing complex calculations and research using the internet")
 
 
 # Define function to check the command and execute the appropriate action
