@@ -126,7 +126,7 @@ function Home() {
 
           {/* BODY */}
           <p className="font-serif italic text-shadow-lg mb-16 text-center font-normal text-stone-300 shadow-black sm:px-16 lg:text-lg xl:px-48">
-          Introducing A.L.P.H.A., an Advanced Logical Processing Holistic Assistance system designed to be your intelligent office companion. While smart home assistants are limited to personal tasks, A.L.P.H.A. is a responsive AI assistant that can promptly execute a wide range of commands by accessing the internet, listening attentively, and working efficiently in a professional environment. With features like opening websites, checking time and weather, performing searches and calculations, A.L.P.H.A. overcomes challenges in speech recognition, server access, and API integration to increase productivity and transform the office experience for employees. Get your own AI assistant for free and make going to work exciting again with A.L.P.H.A.
+          Introducing A.L.P.H.A., an Awesome Logical Processing Holistic Assistance system designed to be your intelligent office companion. While smart home assistants are limited to personal tasks, A.L.P.H.A. is a responsive AI assistant that can promptly execute a wide range of commands by accessing the internet, listening attentively, and working efficiently in a professional environment. With features like opening websites, checking time and weather, performing searches and calculations, A.L.P.H.A. overcomes challenges in speech recognition, server access, and API integration to increase productivity and transform the office experience for employees. Get your own AI assistant for free and make going to work exciting again with A.L.P.H.A.
 
           </p>
           {/* END BODY */}
@@ -156,9 +156,9 @@ function Home() {
         {/* END CARDS */}
         
         <div
-          className="w-56 ml-4 rounded border border-blue-500/30 bg-blue-900/30 p-3 text-center ext-white duration-300 glow:border-teal-500/60 glow:bg-teal-500/40"
+          className="w-56 ml-4 rounded border border-indigo-500/30 bg-indigo-900/30 p-3 text-center ext-white duration-300 glow:border-teal-500/60 glow:bg-teal-500/40"
         >
-          <p className="font-mono text-xl text-teal-300 glow:text-stone-50">
+          <p className="font-mono text-xl text-indigo-300 glow:text-stone-50">
             TSA TeamID: 2237
           </p>
         </div>

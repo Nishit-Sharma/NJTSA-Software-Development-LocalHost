@@ -17,7 +17,20 @@ import pyaudio
 import ffmpeg
 import re
 import io
+import math
 
+
+# Initialize the ElevenLabs text-to-speech engine with the API key
+client = ElevenLabs(api_key="44bd2fafea55e550c58548571fe9f64d")
+
+# Define a function to convert text to speech using the ElevenLabs API
+def speak(text):
+    # Generate audio from the given text using the "James Fitzgerald" voice and "eleven_multilingual_v2" model
+    audio = client.generate(
+        text=text, voice="James Fitzgerald", model="eleven_multilingual_v2",stream=True
+    )
+    # Play the generated audio
+    stream(audio)
 
 class CalendarEvent:
     """
@@ -103,6 +116,8 @@ except (IndexError, json.JSONDecodeError) as e:
 # Create a speech recognition instance
 r = sr.Recognizer()
 
+speak("Hello")
+userInput = ""
 # Select the microphone using the device_index from the device_id dictionary
 with sr.Microphone(device_index=device_id["device_index"]) as source:
     print("Listening...")
@@ -110,23 +125,9 @@ with sr.Microphone(device_index=device_id["device_index"]) as source:
     r.pause_threshold = 1
     # Listen to the audio from the microphone and store it in the audio variable
     audio = r.listen(source)
-
-# Initialize the ElevenLabs text-to-speech engine with the API key
-client = ElevenLabs(api_key="44bd2fafea55e550c58548571fe9f64d")
-
+userInput = r.recognize_google(audio)
 # Set the wake-up keyword to "Alpha"
 wake_word = "Alpha"
-
-
-# Define a function to convert text to speech using the ElevenLabs API
-def speak(text):
-    # Generate audio from the given text using the "James Fitzgerald" voice and "eleven_multilingual_v2" model
-    audio = client.generate(
-        text=text, voice="James Fitzgerald", model="eleven_multilingual_v2",stream=True
-    )
-    # Play the generated audio
-    stream(audio)
-
 
 def open_website(url):
     """Open a website url in the default web browser."""
@@ -301,11 +302,12 @@ def gpt_math(inputtext="what is ten times 9 plus fifty five to the power of 7 an
     # Extract the Python code from the API response
     response = response.choices[0].message.content.replace("```python", "```")
     matches = re.findall(r"(?<=```).*?(?=```)", response, re.DOTALL)
-    response = matches[0]
-
-    print(response)
 
     try:
+        response = matches[0]
+
+        print(response)
+        
         # Temporarily set output into a string variable
         output = io.StringIO()
         sys.stdout = output
@@ -319,7 +321,8 @@ def gpt_math(inputtext="what is ten times 9 plus fifty five to the power of 7 an
 
         # Print and speak the output
         print(output_str)
-        speak(output_str)
+        
+        speak("the answer is"+output_str)
     except:
         # Handle any exceptions that occur during the code execution
         speak("I'm sorry, I couldn't calculate that expression.")
@@ -538,6 +541,8 @@ def check_command(command, r):
     # Check if the command is what can you do?
     if "what can you do" in command.lower():
         utilities()
+    elif "who created you" in command.lower():
+        speak("I was created by the most renowned and skilled software developers at MCST. They are the best in the business and the true alphas.")
     # Check if the command contains "open"
     elif "open" in command.lower():
         # If "open" is found, pass the command to the gpt_goto_website function
@@ -571,9 +576,9 @@ def check_command(command, r):
         # If "set" and "reminder" are found, call the set_reminder function
         set_reminder(r)
     # Check if the command contains "google"
-    elif "google" in command.lower():
+    elif "search" in command.lower():
         # If "google" is found, extract the search query from the command
-        query = command.lower().replace("google", "").strip()
+        query = command.lower().replace("search", "").strip()
         if query:
             # Replace spaces with "+" in the query
             query = query.replace(" ", "+")
@@ -603,31 +608,38 @@ def check_command(command, r):
             # If no query is provided, ask for the chat topic
             speak("What would you like to chat about?")
 
+print(userInput)
+if (wake_word.lower() in userInput.lower()):
+    # Removing the word alpha from user input
+    userInput = userInput.replace(wake_word, "")
+    
+    print("You said: " + userInput)
+    
+    check_command(userInput, r)
+    # try:
+    #     # Create a speech recognition instance and set the audio source
+    #     # r = sr.Recognizer()
+    #     speak("Yes Sir?")
+    #     with sr.Microphone(device_index=device_id["device_index"]) as source:
+    #         print("Listening...")
+    #         r.pause_threshold = 1
+    #         audio = r.listen(source)
 
-try:
-    # Create a speech recognition instance and set the audio source
-    r = sr.Recognizer()
-    speak("Yes Sir?")
-    with sr.Microphone(device_index=device_id["device_index"]) as source:
-        print("Listening...")
-        r.pause_threshold = 1
-        audio = r.listen(source)
+    #     # Convert speech to text
+    #     command = r.recognize_google(audio)
+    #     print("You said: " + command)
 
-    # Convert speech to text
-    command = r.recognize_google(audio)
-    print("You said: " + command)
+    #     # Check the command and execute the appropriate action
+    #     check_command(command, r)
 
-    # Check the command and execute the appropriate action
-    check_command(command, r)
+    #     # Check if the command contains "goodbye" or "exit"
+    #     if "goodbye" in command.lower() or "exit" in command.lower():
+    #         # If "goodbye" or "exit" is found, speak a farewell message
+    #         speak("Goodbye!")
 
-    # Check if the command contains "goodbye" or "exit"
-    if "goodbye" in command.lower() or "exit" in command.lower():
-        # If "goodbye" or "exit" is found, speak a farewell message
-        speak("Goodbye!")
-
-except sr.UnknownValueError:
-    # Handle the case when the speech recognition fails to understand the input
-    speak("I'm sorry, I didn't understand that.")
-except sr.RequestError as e:
-    # Handle the case when the speech recognition fails to reach the Google servers
-    speak("Sorry, I couldn't reach the Google servers. Check your internet connection.")
+    # except sr.UnknownValueError:
+    #     # Handle the case when the speech recognition fails to understand the input
+    #     speak("I'm sorry, I didn't understand that.")
+    # except sr.RequestError as e:
+    #     # Handle the case when the speech recognition fails to reach the Google servers
+    #     speak("Sorry, I couldn't reach the Google servers. Check your internet connection.")
